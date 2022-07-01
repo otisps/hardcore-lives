@@ -1,5 +1,6 @@
 package technology.otis.teamhardcore.teams;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import technology.otis.teamhardcore.Teamhardcore;
 import technology.otis.teamhardcore.general.ChatUtils;
 import technology.otis.teamhardcore.general.UUIDFetcher;
+import technology.otis.teamhardcore.scoreboard.ScoreboardFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +85,11 @@ public class TeamCommand implements CommandExecutor {
             if(subCommand.equalsIgnoreCase("invite")){
                 Teamhardcore.getInstance().sqlGetter.setTeamName(playerId, teamName);
                 Teamhardcore.teamMap.put(uuid, teamName);
+                ScoreboardFactory scoreboardFactory = new ScoreboardFactory();
+                Player player = Bukkit.getPlayer(uuid);
+                if(player != null) {
+                    player.setScoreboard(scoreboardFactory.getScoreboard(playerId));
+                }
                 message = "Player's team has been updated!";
                 message = chatUtils.hexFormat(message);
                 sender.sendMessage(message);
@@ -91,7 +98,7 @@ public class TeamCommand implements CommandExecutor {
             return true;
         }
         message = Teamhardcore.getInstance().getConfig().getString("messages.usage");
-        message = chatUtils.hexFormat(message).replace("%team%", "/team {get}");
+        message = chatUtils.hexFormat(message).replace("%usage%", "/team {get}");
         sender.sendMessage(message);
         return true;
     }

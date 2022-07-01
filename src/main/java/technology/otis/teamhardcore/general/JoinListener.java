@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import technology.otis.teamhardcore.Teamhardcore;
 import technology.otis.teamhardcore.db.SQLGetter;
+import technology.otis.teamhardcore.scoreboard.ScoreboardFactory;
 
 public class JoinListener implements Listener {
 
@@ -18,6 +19,8 @@ public class JoinListener implements Listener {
         String team = "";
         boolean alreadyExists = sqlGetter.tableContains(playerId);
         if (alreadyExists) {
+            ScoreboardFactory scoreboardFactory = new ScoreboardFactory();
+            player.setScoreboard(scoreboardFactory.getScoreboard(playerId));
             int numberOfLives = sqlGetter.getLives(playerId);
             if (numberOfLives == 0){
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.outoflives");
@@ -32,6 +35,8 @@ public class JoinListener implements Listener {
         if (!alreadyExists ){
             sqlGetter.addUser(player.getName());
         }
+        ScoreboardFactory scoreboardFactory = new ScoreboardFactory();
+        player.setScoreboard(scoreboardFactory.getScoreboard(playerId));
         if(team.equalsIgnoreCase("")|| team.equalsIgnoreCase(" ")) return;
         Teamhardcore.teamMap.put(player.getUniqueId(), team);
     }

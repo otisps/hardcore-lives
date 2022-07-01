@@ -7,6 +7,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import technology.otis.teamhardcore.Teamhardcore;
 import technology.otis.teamhardcore.db.SQLGetter;
 import technology.otis.teamhardcore.general.ChatUtils;
+import technology.otis.teamhardcore.scoreboard.ScoreboardFactory;
 
 public class DeathListener implements Listener {
 
@@ -17,6 +18,8 @@ public class DeathListener implements Listener {
         String playerId = player.getUniqueId().toString();
         SQLGetter sqlGetter = Teamhardcore.getInstance().sqlGetter;
         sqlGetter.setLives(playerId, sqlGetter.getLives(playerId) - 1);
+        ScoreboardFactory scoreboardFactory = new ScoreboardFactory();
+        player.setScoreboard(scoreboardFactory.getScoreboard(playerId));
         if (sqlGetter.getLives(playerId) <= 0){
             String message = Teamhardcore.getInstance().getConfig().getString("messages.outoflives");
             message = chatUtils.hexFormat(message);

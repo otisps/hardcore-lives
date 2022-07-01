@@ -17,6 +17,7 @@ sqlite:
   file-name: database # Ignore if using MySQL
 setting:
   default-lives: 3 # How many lives' player has unless set otherwise.
+  scoreboard-title: Player stats
 messages:
   own-score: Your score is %score%
   other-score: Player %player% has a score of %score%
