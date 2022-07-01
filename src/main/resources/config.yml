@@ -1,0 +1,31 @@
+#######################################################################
+#                                                                     #
+#            DATABASE SETUP - IMPORTANT DO NOT FILL OUT BOTH          #
+#            MySQL & SQLite SECTIONS, YOU SHOULD ONLY HAVE 1          #
+#            DATABASE - MySQL for external db, and use SQLite         #
+#            for a .db file in the plugin folder.                     #
+#            DO NOT CHANGE ONCE SET, WITHOUT TRANSFERRING DATA!       #
+#                                                                     #
+#######################################################################
+mysql: # Enter the details given by your host here if using MySQL, else leave blank!
+  host:
+  port:
+  database:
+  username:
+  password:
+sqlite:
+  file-name: database # Ignore if using MySQL
+setting:
+  default-lives: 3 # How many lives' player has unless set otherwise.
+messages: # Placeholders are %score% , %player% , %usage% , %lives% and finally %team%
+  own-score: Your score is %score%
+  other-score: Player %player% has a score of %score%
+  unknown-target: Player %player% not found!
+  usage: Error! Correct usage is %usage%
+  outoflives: I'm sorry but you're out of lives and therefore can't continue playing!
+  death: You've lost one life!
+  lives: You have %lives% remaining!
+  own-lives: You have %lives% remaining lives!
+  other-lives: Player %player% has %lives% remaining lives!
+  get-teams: The current active teams are
+  team-players: The players in team %team% are

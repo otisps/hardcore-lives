@@ -1,0 +1,23 @@
+name: Teamhardcore
+version: '${project.version}'
+main: technology.otis.teamhardcore.Teamhardcore
+api-version: 1.19
+authors: [ OtisPS ]
+description: Lives based hardcore mode with team oriented play, using an SQL Database for storage. Plugin also keeps a record of achievement points.
+website: spigot.otis.technology
+commands:
+  teams:
+    description: For listing teams, or running a subcommand, see /teams help.
+    usage: "/teams"
+  team:
+    description: Allows players to see who's on their team!
+    usage: "/team"
+  setlives:
+    description:  Allows admins to set the amount of lives (max 5)
+    usage: "/setlives player lives"
+  lives:
+    description: Allows players to see how many lives they have left.
+    usage: "/lives"
+  score:
+    description: Allows players to see their score, i.e how many achievements there are.
+    usage: "/score"
