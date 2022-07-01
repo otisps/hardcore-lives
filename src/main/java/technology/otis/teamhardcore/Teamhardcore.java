@@ -56,7 +56,7 @@ public final class Teamhardcore extends JavaPlugin {
         }
 
         getCommand("teams").setExecutor(new TeamsCommand());
-        getCommand("team").setTabCompleter(new TeamCommand());
+        getCommand("team").setExecutor(new TeamCommand());
         getCommand("setlives").setExecutor(new SetLivesCommand());
         getCommand("score").setExecutor(new ScoreCommand());
         getCommand("lives").setExecutor(new LivesCommand());

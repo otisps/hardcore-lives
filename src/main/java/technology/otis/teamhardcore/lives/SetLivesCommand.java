@@ -20,6 +20,10 @@ public class SetLivesCommand implements CommandExecutor {
             String username = args[0];
             String playerId = String.valueOf(UUIDFetcher.getUUID(username));
             int lives = Integer.parseInt(args[1]);
+            if (lives > 5){
+                sender.sendMessage("&c&lWarning Max lives is 5!");
+                return true;
+            }
             SQLGetter sqlGetter = Teamhardcore.getInstance().sqlGetter;
             sqlGetter.setLives(playerId, lives);
             String message = "Player updated with new total of lives!";
@@ -28,7 +32,7 @@ public class SetLivesCommand implements CommandExecutor {
             return true;
         }
         String message = Teamhardcore.getInstance().getConfig().getString("messages.usage");
-        message = chatUtils.hexFormat(message);
+        message = chatUtils.hexFormat(message).replace("%usage%","/setlives {player} {amount}");
         sender.sendMessage(message);
         return true;
     }

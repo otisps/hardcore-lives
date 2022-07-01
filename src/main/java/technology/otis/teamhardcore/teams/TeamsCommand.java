@@ -18,7 +18,10 @@ public class TeamsCommand implements CommandExecutor {
         sender.sendMessage(message);
         for (String team:
              teamNames) {
-            sender.sendMessage(" - " + team);
+            if((team.equalsIgnoreCase("") || team.equalsIgnoreCase(" "))){
+            } else {
+                sender.sendMessage(" - " + team);
+            }
         }
         return true;
     }

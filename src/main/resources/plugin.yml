@@ -7,7 +7,7 @@ description: Lives based hardcore mode with team oriented play, using an SQL Dat
 website: spigot.otis.technology
 commands:
   teams:
-    description: For listing teams, or running a subcommand, see /teams help.
+    description: For listing teams, or running a subcommand.
     usage: "/teams"
   team:
     description: Allows players to see who's on their team!

@@ -32,6 +32,7 @@ public class JoinListener implements Listener {
         if (!alreadyExists ){
             sqlGetter.addUser(player.getName());
         }
+        if(team.equalsIgnoreCase("")|| team.equalsIgnoreCase(" ")) return;
         Teamhardcore.teamMap.put(player.getUniqueId(), team);
     }
 }

@@ -20,9 +20,9 @@ public class LivesCommand implements CommandExecutor {
             if (sender instanceof  Player){
                 Player player = (Player) sender;
                 String playerId = player.getUniqueId().toString();
-                sqlGetter.getLives(playerId);
+                int lives = sqlGetter.getLives(playerId);
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.own-lives");
-                message = chatUtils.hexFormat(message);
+                message = chatUtils.hexFormat(message).replace("%lives%", lives + "");
                 sender.sendMessage(message);
                 return true;
             }
@@ -31,30 +31,30 @@ public class LivesCommand implements CommandExecutor {
             String username = args[0];
             String targetId = UUIDFetcher.getUUID(username).toString();
             if(!sqlGetter.tableContains(targetId)){
-                String message = Teamhardcore.getInstance().getConfig().getString("messages.not-found");
-                message = chatUtils.hexFormat(message);
+                String message = Teamhardcore.getInstance().getConfig().getString("messages.unknown-target");
+                message = chatUtils.hexFormat(message).replace("%player%", args[0]);
                 sender.sendMessage(message);
                 return true;
             }
             if (admin) {
-                sqlGetter.getLives(targetId);
+                int lives = sqlGetter.getLives(targetId);
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.other-lives");
-                message = chatUtils.hexFormat(message);
+                message = chatUtils.hexFormat(message).replace("%lives%" ,lives + "").replace("%player%", args[0]);
                 sender.sendMessage(message);
                 return true;
             }
 
             Player senderP = (Player) sender;
             if (sqlGetter.getTeamName(senderP.getUniqueId().toString()).equalsIgnoreCase(sqlGetter.getTeamName(targetId))){
-                sqlGetter.getLives(targetId);
+                int lives = sqlGetter.getLives(targetId);
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.other-lives");
-                message = chatUtils.hexFormat(message);
+                message = chatUtils.hexFormat(message).replace("%lives%" ,lives + "").replace("%player%", args[0]);
                 sender.sendMessage(message);
                 return true;
             }
         }
         String message = Teamhardcore.getInstance().getConfig().getString("messages.usage");
-        message = chatUtils.hexFormat(message);
+        message = chatUtils.hexFormat(message).replace("%usage%", "/lives {teamMate}");
         sender.sendMessage(message);
         return true;
     }

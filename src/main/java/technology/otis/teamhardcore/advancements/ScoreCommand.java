@@ -22,9 +22,9 @@ public class ScoreCommand implements CommandExecutor {
             if (sender instanceof  Player){
                 Player player = (Player) sender;
                 String playerId = player.getUniqueId().toString();
-                sqlGetter.getAdvancements(playerId);
+                int score = sqlGetter.getAdvancements(playerId);
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.own-score");
-                message = chatUtils.hexFormat(message);
+                message = chatUtils.hexFormat(message).replace("%score%", score + "");
                 sender.sendMessage(message);
                 return true;
             }
@@ -33,9 +33,10 @@ public class ScoreCommand implements CommandExecutor {
             String username = args[0];
             UUID uuid = UUIDFetcher.getUUID(username);
             String targetId = uuid.toString();
+            int score = sqlGetter.getAdvancements(targetId);
             if(!(sqlGetter.tableContains(targetId))) {
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.unknown-target");
-                message = chatUtils.hexFormat(message);
+                message = chatUtils.hexFormat(message).replace("%player%", args[0]);
                 sender.sendMessage(message);
                 return true;
             }
@@ -43,13 +44,14 @@ public class ScoreCommand implements CommandExecutor {
             if (admin || sqlGetter.getTeamName(senderP.getUniqueId().toString()).equalsIgnoreCase(sqlGetter.getTeamName(targetId))){
                 sqlGetter.getAdvancements(targetId);
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.other-score");
+                message = chatUtils.hexFormat(message).replace("%score%", score + "").replace("%player%", args[0]);
                 sender.sendMessage(message);
             }
 
             return true;
         }
         String message = Teamhardcore.getInstance().getConfig().getString("messages.usage");
-        message = chatUtils.hexFormat(message);
+        message = chatUtils.hexFormat(message).replace("%usage%", "See your own score or a teammates: /score {Optional - teamMate}");
         sender.sendMessage(message);
         return true;
     }

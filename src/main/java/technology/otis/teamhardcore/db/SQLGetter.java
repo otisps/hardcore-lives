@@ -63,10 +63,11 @@ public class SQLGetter {
                 statement.setString(2, uuid);
                 statement.setString(3,"");
                 statement.setInt(4, 0);
-                statement.setInt(5,0);
+                statement.setInt(5, Teamhardcore.getInstance().getConfig().getInt("setting.default-lives"));
                 statement.executeUpdate();
                 return;
             }
+
         } catch (SQLException e){
             e.printStackTrace();
         }
