@@ -36,7 +36,7 @@ public class SQLGetter {
     public boolean tableContains(String playerId){
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("SELECT * FROM playerdata WHERE playerUUID=?");
+                    .prepareStatement("SELECT * FROM playerData WHERE playerID=?");
             statement.setString(1, playerId);
             ResultSet results = statement.executeQuery();
             if(results.next()){
@@ -79,7 +79,7 @@ public class SQLGetter {
     public int getAdvancements(String playerId){
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("SELECT advancements FROM playerData WHERE playerUUID=?");
+                    .prepareStatement("SELECT advancements FROM playerData WHERE playerID=?");
             statement.setString(1, playerId);
             ResultSet results = statement.executeQuery();
             if(results.next()){
@@ -99,7 +99,7 @@ public class SQLGetter {
     public String getTeamName(String playerId){
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("SELECT teamName FROM playerData WHERE playerUUID=?");
+                    .prepareStatement("SELECT teamName FROM playerData WHERE playerID=?");
             statement.setString(1, playerId);
             ResultSet results = statement.executeQuery();
             if(results.next()){
@@ -120,7 +120,7 @@ public class SQLGetter {
     public int getLives(String playerId){
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("SELECT lives FROM playerData WHERE playerUUID=?");
+                    .prepareStatement("SELECT lives FROM playerData WHERE playerID=?");
             statement.setString(1, playerId);
             ResultSet results = statement.executeQuery();
             if(results.next()){
@@ -143,7 +143,7 @@ public class SQLGetter {
         }
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("UPDATE playerdata SET advancements=? WHERE playerUUID=?");
+                    .prepareStatement("UPDATE playerData SET advancements=? WHERE playerID=?");
             statement.setInt(1, advancements);
             statement.setString(2, playerId);
             statement.executeUpdate();
@@ -162,7 +162,7 @@ public class SQLGetter {
         }
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("UPDATE playerdata SET teamName=? WHERE playerUUID=?");
+                    .prepareStatement("UPDATE playerData SET teamName=? WHERE playerID=?");
             statement.setString(1, teamName);
             statement.setString(2, playerId);
             statement.executeUpdate();
@@ -182,7 +182,7 @@ public class SQLGetter {
         }
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("UPDATE playerdata SET lives=? WHERE playerUUID=?");
+                    .prepareStatement("UPDATE playerData SET lives=? WHERE playerID=?");
             statement.setInt(1, lives);
             statement.setString(2, playerId);
             statement.executeUpdate();
@@ -226,7 +226,7 @@ public class SQLGetter {
         ArrayList<String> players = new ArrayList<>();
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
-                    .prepareStatement("SELECT playerUUID FROM playerData WHERE teamName=?");
+                    .prepareStatement("SELECT playerID FROM playerData WHERE teamName=?");
             statement.setString(1,teamName);
             ResultSet results = statement.executeQuery();
             while(results.next()){
