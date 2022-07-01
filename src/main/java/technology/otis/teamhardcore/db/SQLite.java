@@ -10,7 +10,7 @@ public class SQLite extends SQLTemplate{
     private String databaseName;
 
     public SQLite(Teamhardcore plugin){
-        this.databaseName = plugin.getConfig().getString("sqlite.database");
+        this.databaseName = plugin.getConfig().getString("sqlite.file-name");
     }
     @Override
     public void connect() throws ClassNotFoundException, SQLException {
