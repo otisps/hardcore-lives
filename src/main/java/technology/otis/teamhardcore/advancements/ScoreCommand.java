@@ -8,6 +8,7 @@ import technology.otis.teamhardcore.Teamhardcore;
 import technology.otis.teamhardcore.db.SQLGetter;
 import technology.otis.teamhardcore.general.ChatUtils;
 import technology.otis.teamhardcore.general.UUIDFetcher;
+
 import java.util.UUID;
 
 public class ScoreCommand implements CommandExecutor {
@@ -31,7 +32,8 @@ public class ScoreCommand implements CommandExecutor {
         }
         if (argLength == 1) {
             String username = args[0];
-            UUID uuid = UUIDFetcher.getUUID(username);
+            UUID uuid = null;
+            uuid = UUIDFetcher.getUUID(username);
             String targetId = uuid.toString();
             int score = sqlGetter.getAdvancements(targetId);
             if(!(sqlGetter.tableContains(targetId))) {

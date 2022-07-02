@@ -16,31 +16,31 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 public class UUIDFetcher {
-        public static final long FEBRUARY_2015 = 1422748800000L;
-        private static Gson gson;
+    public static final long FEBRUARY_2015 = 1422748800000L;
+    private static Gson gson;
 
 
-        private static final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
-        private static final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
-        private static Map<String, UUID> uuidCache;
-        private static Map<UUID, String> nameCache;
-        private static ExecutorService pool;
-        private String name;
-        private UUID id;
+    private static final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
+    private static final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
+    private static Map<String, UUID> uuidCache;
+    private static Map<UUID, String> nameCache;
+    private static ExecutorService pool;
+    private String name;
+    private UUID id;
 
-        public static void getUUID(final String name, final Consumer<UUID> action) {
+    public static void getUUID(final String name, final Consumer<UUID> action) {
         UUIDFetcher.pool.execute(() -> action.accept(getUUID(name)));
     }
 
-        public static UUID getUUID(final String name) {
+    public static UUID getUUID(final String name) {
         return getUUIDAt(name, System.currentTimeMillis());
     }
 
-        public static void getUUIDAt(final String name, final long timestamp, final Consumer<UUID> action) {
+    public static void getUUIDAt(final String name, final long timestamp, final Consumer<UUID> action) {
         UUIDFetcher.pool.execute(() -> action.accept(getUUIDAt(name, timestamp)));
     }
 
-        public static UUID getUUIDAt(String name, final long timestamp) {
+    public static UUID getUUIDAt(String name, final long timestamp) {
         name = name.toLowerCase();
         if (UUIDFetcher.uuidCache.containsKey(name)) {
             return UUIDFetcher.uuidCache.get(name);
@@ -58,11 +58,11 @@ public class UUIDFetcher {
         }
     }
 
-        public static void getName(final UUID uuid, final Consumer<String> action) {
+    public static void getName(final UUID uuid, final Consumer<String> action) {
         UUIDFetcher.pool.execute(() -> action.accept(getName(uuid)));
     }
 
-        public static String getName(final UUID uuid) {
+    public static String getName(final UUID uuid) {
         if (UUIDFetcher.nameCache.containsKey(uuid)) {
             return UUIDFetcher.nameCache.get(uuid);
         }
@@ -81,7 +81,7 @@ public class UUIDFetcher {
         }
     }
 
-        static {
+    static {
         UUIDFetcher.gson = new GsonBuilder().registerTypeAdapter((Type)UUID.class, (Object)new UUIDTypeAdapter()).create();
         UUIDFetcher.uuidCache = new HashMap<String, UUID>();
         UUIDFetcher.nameCache = new HashMap<UUID, String>();

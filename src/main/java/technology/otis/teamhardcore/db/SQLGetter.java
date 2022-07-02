@@ -1,7 +1,9 @@
 package technology.otis.teamhardcore.db;
 
+import org.bukkit.Bukkit;
 import technology.otis.teamhardcore.Teamhardcore;
 import technology.otis.teamhardcore.general.UUIDFetcher;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -70,6 +72,8 @@ public class SQLGetter {
 
         } catch (SQLException e){
             e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
     /**
@@ -140,7 +144,7 @@ public class SQLGetter {
      */
     public void setAdvancements(String playerId, int advancements) {
         if (!tableContains(playerId)){
-            addUser(UUIDFetcher.getName(UUID.fromString(playerId)));
+            addUser(Bukkit.getOfflinePlayer(playerId).getName());
         }
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
@@ -159,7 +163,7 @@ public class SQLGetter {
      */
     public void setTeamName(String playerId, String teamName) {
         if (!tableContains(playerId)){
-            addUser(UUIDFetcher.getName(UUID.fromString(playerId)));
+            addUser(Bukkit.getOfflinePlayer(playerId).getName());
         }
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
@@ -179,7 +183,7 @@ public class SQLGetter {
      */
     public void setLives (String playerId, int lives) {
         if (!tableContains(playerId)){
-            addUser(UUIDFetcher.getName(UUID.fromString(playerId)));
+            addUser(Bukkit.getOfflinePlayer(playerId).getName());
         }
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
@@ -233,8 +237,8 @@ public class SQLGetter {
             while(results.next()){
                 String playerId = results.getString(1);
                 UUID uuid = UUID.fromString(playerId);
-                String username = UUIDFetcher.getName(uuid);
-                players.add(username);
+                addUser(Bukkit.getOfflinePlayer(uuid).getName());
+                players.add(Bukkit.getOfflinePlayer(uuid).getName());
             }
         } catch (SQLException e){
             e.printStackTrace();

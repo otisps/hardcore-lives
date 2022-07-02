@@ -1,5 +1,6 @@
 package technology.otis.teamhardcore.lives;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,12 @@ public class LivesCommand implements CommandExecutor {
         }
         if (argLength == 1) {
             String username = args[0];
-            String targetId = UUIDFetcher.getUUID(username).toString();
+            String targetId = null;
+            try {
+                targetId = UUIDFetcher.getUUID(username).toString();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             if(!sqlGetter.tableContains(targetId)){
                 String message = Teamhardcore.getInstance().getConfig().getString("messages.unknown-target");
                 message = chatUtils.hexFormat(message).replace("%player%", args[0]);

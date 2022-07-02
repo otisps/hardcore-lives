@@ -1,5 +1,6 @@
 package technology.otis.teamhardcore.lives;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +19,8 @@ public class SetLivesCommand implements CommandExecutor {
         int arglength = args.length;
         if(arglength == 2 && admin){
             String username = args[0];
-            String playerId = String.valueOf(UUIDFetcher.getUUID(username));
+            String playerId = null;
+            playerId = UUIDFetcher.getUUID(username).toString();
             int lives = Integer.parseInt(args[1]);
             if (lives > 5){
                 sender.sendMessage("&c&lWarning Max lives is 5!");

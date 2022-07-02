@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import technology.otis.teamhardcore.Teamhardcore;
 import technology.otis.teamhardcore.general.ChatUtils;
@@ -12,7 +11,6 @@ import technology.otis.teamhardcore.general.UUIDFetcher;
 import technology.otis.teamhardcore.scoreboard.ScoreboardFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class TeamCommand implements CommandExecutor {
@@ -27,16 +25,7 @@ public class TeamCommand implements CommandExecutor {
             if(!(sender instanceof Player)) return true;
             Player player = (Player) sender;
             String team = Teamhardcore.getInstance().sqlGetter.getTeamName(player.getUniqueId().toString());
-            message = chatUtils.hexFormat(message).replace("%team%", team);
-            if(team.equalsIgnoreCase("") || team.equalsIgnoreCase(" ")){
-                return true;
-            }
-            sender.sendMessage(message);
-            for (String teamMate:
-                    Teamhardcore.getInstance().sqlGetter.getPlayersInTeam(team)) {
-                sender.sendMessage(" - " + teamMate);
-            }
-            return true;
+            return msgPlayerFromTeam(sender, chatUtils, message, team);
         }
         String subCommand = args[0];
         if (argLength == 2){
@@ -44,19 +33,16 @@ public class TeamCommand implements CommandExecutor {
             Player player = (Player) sender;
             if (subCommand.equalsIgnoreCase("get")){
                 String team = args[1];
-                message = chatUtils.hexFormat(message).replace("%team%", team);
-                if(team.equalsIgnoreCase("") || team.equalsIgnoreCase(" ")){
-                    return true;
-                }
-                sender.sendMessage(message);
-                for (String teamMate:
-                     Teamhardcore.getInstance().sqlGetter.getPlayersInTeam(team)) {
-                    sender.sendMessage(" - " + teamMate);
-                }
-                return true;
+                return msgPlayerFromTeam(sender, chatUtils, message, team);
             }
             if(subCommand.equalsIgnoreCase("exclude")){
-                String playerId = UUIDFetcher.getUUID(player.getName()).toString();
+                String playerId = null;
+                try {
+                    String username = player.getName();
+                    playerId = UUIDFetcher.getUUID(username).toString();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 Teamhardcore.getInstance().sqlGetter.setTeamName(playerId, "");
                 message = "Player has been stripped of a team!";
                 message = chatUtils.hexFormat(message);
@@ -80,7 +66,12 @@ public class TeamCommand implements CommandExecutor {
             }
             String username = args[1];
             String teamName = args[2];
-            UUID uuid = UUIDFetcher.getUUID(username);
+            UUID uuid = null;
+            try {
+                uuid = UUIDFetcher.getUUID(username);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             String playerId = uuid.toString();
             if(subCommand.equalsIgnoreCase("invite")){
                 Teamhardcore.getInstance().sqlGetter.setTeamName(playerId, teamName);
@@ -100,6 +91,19 @@ public class TeamCommand implements CommandExecutor {
         message = Teamhardcore.getInstance().getConfig().getString("messages.usage");
         message = chatUtils.hexFormat(message).replace("%usage%", "/team {get}");
         sender.sendMessage(message);
+        return true;
+    }
+
+    private boolean msgPlayerFromTeam(CommandSender sender, ChatUtils chatUtils, String message, String team) {
+        message = chatUtils.hexFormat(message).replace("%team%", team);
+        if(team.equalsIgnoreCase("") || team.equalsIgnoreCase(" ")){
+            return true;
+        }
+        sender.sendMessage(message);
+        for (String teamMate:
+             Teamhardcore.getInstance().sqlGetter.getPlayersInTeam(team)) {
+            sender.sendMessage(" - " + teamMate);
+        }
         return true;
     }
 }
