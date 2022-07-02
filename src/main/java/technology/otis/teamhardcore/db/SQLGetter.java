@@ -163,7 +163,7 @@ public class SQLGetter {
      */
     public void setTeamName(String playerId, String teamName) {
         if (!tableContains(playerId)){
-            addUser(Bukkit.getOfflinePlayer(playerId).getName());
+                addUser(UUIDFetcher.getName(UUID.fromString(playerId)));
         }
         try {
             PreparedStatement statement = Teamhardcore.getInstance().sql.getConnection()
@@ -237,8 +237,8 @@ public class SQLGetter {
             while(results.next()){
                 String playerId = results.getString(1);
                 UUID uuid = UUID.fromString(playerId);
-                addUser(Bukkit.getOfflinePlayer(uuid).getName());
-                players.add(Bukkit.getOfflinePlayer(uuid).getName());
+                addUser(UUIDFetcher.getName(uuid));
+                players.add(UUIDFetcher.getName(uuid));
             }
         } catch (SQLException e){
             e.printStackTrace();
